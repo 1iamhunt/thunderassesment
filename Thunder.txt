@@ -1,0 +1,94 @@
+
+R version 4.0.4 (2021-02-15) -- "Lost Library Book"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[R.app GUI 1.74 (7936) x86_64-apple-darwin17.0]
+
+[History restored from /Users/liamhunt/.Rapp.history]
+
+> shots=read.csv(file="shots_data.csv", header=T)
+> 
+> ## Breaking the data up by team ##
+> teamA=shots[1:280,]
+> teamB=shots[281:560,]
+> 
+> ## Defining 2 point, 3 point non corner and corner 3 ##
+> twoPT.a=teamA[which(teamA$x>-22 & teamA$x<22 & teamA$y<=7.8),]
+> twoPT.b=teamB[which(teamB$x>-22 & teamB$x<22 & teamB$y<=7.8),]
+> NC3.a=teamA[which((teamA$x^2)+((teamA$y)^2)>=23.75 & teamA$y>7.8),]
+> NC3.b=teamB[which((teamB$x^2)+((teamB$y)^2)>=23.75 & teamB$y>7.8),]
+> c3a=teamA[which(teamA$x > 22 & teamA$y <= 7.8),]
+> c3.a=teamA[which(teamA$x < -22 & teamA$y <= 7.8),]
+> c3b=teamB[which(teamB$x > 22 & teamB$y <= 7.8),]
+> c3.b=teamB[which(teamB$x < -22 & teamB$y <= 7.8),]
+> corner.a=rbind(c3a,c3.a)
+> corner.b=rbind(c3b,c3.b)
+> 
+> ## Determining shot distribution ##
+> # Team A #
+> twoptFreq.a=length(twoPT.a$fgmade)/length(teamA$fgmade)
+> NC3freq.a=length(NC3.a$fgmade)/length(teamA$fgmade)
+> cornerFreq.a=length(corner.a$fgmade)/length(teamA$fgmade)
+> # Team B #
+> twoptFreq.b=length(twoPT.b$fgmade)/length(teamB$fgmade)
+> NC3freq.b=length(NC3.b$fgmade)/length(teamB$fgmade)
+> cornerFreq.b=length(corner.b$fgmade)/length(teamB$fgmade)
+> 
+> # Team A results #
+> twoptFreq.a
+[1] 0.4214286
+> NC3freq.a
+[1] 0.5071429
+> cornerFreq.a
+[1] 0.07142857
+> 
+> # Team B results #
+> twoptFreq.b
+[1] 0.3964286
+> NC3freq.b
+[1] 0.5285714
+> cornerFreq.b
+[1] 0.075
+> 
+> ## Effective Field Goal % ##
+> eFG.2pt.a=length(twoPT.a$fgmade[which(twoPT.a$fgmade==1)])/length(twoPT.a$fgmade)
+> eFG.2pt.b=length(twoPT.b$fgmade[which(twoPT.b$fgmade==1)])/length(twoPT.b$fgmade)
+> NC3made.a=NC3.a$fgmade[which(NC3.a$fgmade==1)]
+> eFG.NC3.a=length(NC3made.a+0.5*length(NC3made.a))/length(NC3.a$fgmade)
+> NC3made.b=NC3.b$fgmade[which(NC3.b$fgmade==1)]
+> eFG.NC3.b=length(NC3made.b+0.5*length(NC3made.b))/length(NC3.b$fgmade)
+> C3made.a=corner.a$fgmade[which(corner.a$fgmade==1)]
+> eFG.C3.a=length(C3made.a+0.5*length(C3made.a))/length(corner.a$fgmade)
+> C3made.b=corner.b$fgmade[which(corner.b$fgmade==1)]
+> eFG.C3.b=length(C3made.b+0.5*length(C3made.b))/length(corner.b$fgmade)
+> 
+> # Team A results #
+> eFG.2pt.a
+[1] 0.4152542
+> eFG.NC3.a
+[1] 0.3380282
+> eFG.C3.a
+[1] 0.4
+> # Team B results #
+> eFG.2pt.b
+[1] 0.5315315
+> eFG.NC3.b
+[1] 0.3445946
+> eFG.C3.b
+[1] 0.2380952
+> 
